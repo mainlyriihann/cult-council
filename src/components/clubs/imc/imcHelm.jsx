@@ -52,40 +52,33 @@ const ImcHelm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-t from-slate-900 via-gray-900 to-gray-800 flex items-center justify-center p-4 relative py-14">
+    <div className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-4 relative py-32">
+      {/* Cyber Grid Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full opacity-10"
-            style={{
-              width: `${Math.random() * 200 + 50}px`,
-              height: `${Math.random() * 200 + 50}px`,
-              background: 'white',
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animation: `floatBubble ${Math.random() * 10 + 10}s linear infinite`,
-              animationDelay: `${Math.random()}s`,
-            }}
-          />
-        ))}
+        <div className="absolute inset-0" 
+          style={{
+            backgroundImage: 'linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+            transform: 'perspective(500px) rotateX(60deg)',
+            transformOrigin: 'center top'
+          }}
+        />
       </div>
 
-      <style jsx>{`
-        @keyframes floatBubble {
-          0% { transform: translateY(100vh) scale(0); opacity: 0; }
-          50% { opacity: 0.1; }
-          100% { transform: translateY(-100px) scale(1); opacity: 0; }
-        }
-      `}</style>
-
-      <div className="relative max-w-6xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-semibold text-slate-200">Our Helm</h2>
-          <p className="text-gray-600 mt-2">Meet our Helm Team</p>
+      <div className="relative max-w-7xl w-full z-10">
+        <div className="text-center mb-20">
+          <div className="inline-block relative">
+            <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-500 bg-clip-text text-transparent pb-2">
+              Our Helm
+            </h2>
+            {/* Decorative lines */}
+            <div className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+            <div className="absolute -bottom-4 left-[10%] w-[80%] h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+          </div>
+          <p className="text-cyan-400/80 mt-8 text-lg md:text-xl">Meet the Visionaries Leading Our Journey</p>
         </div>
 
-        <div className="flex justify-center items-center -space-x-8 flex-wrap">
+        <div className="flex justify-center items-center gap-4 md:gap-8 flex-wrap">
           {teamMembers.map((member, index) => (
             <div
               key={member.name}
@@ -94,73 +87,68 @@ const ImcHelm = () => {
               onMouseLeave={() => !isMobile && setHoveredMember(null)}
               onTouchStart={() => isMobile && handleLongPressStart(index)}
               onTouchEnd={() => isMobile && handleLongPressEnd()}
-              style={{ zIndex: hoveredMember === index || longPressedMember === index ? 10 : 1 }}
             >
-              {/* Role Tooltip (Visible on Hover for Desktop and Long Press for Mobile) */}
-              {(hoveredMember === index || longPressedMember === index) && (
-                <div
-                  className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg transform transition-all duration-300"
-                >
-                  <p className="text-sm font-semibold whitespace-nowrap">{member.role}</p>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white transform rotate-45"></div>
-                </div>
-              )}
-
+              {/* Hexagonal Frame */}
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 rounded-lg transform rotate-45 scale-[0.7] group-hover:scale-[0.75] transition-transform duration-500" />
+              
               {/* Avatar Container */}
-              <div
-                className={`relative rounded-full overflow-hidden transform transition-all duration-300 ${
-                  hoveredMember === index || longPressedMember === index ? 'scale-110' : 'scale-100'
-                }`}
-                // Dynamic sizing for image frame
-                style={{
-                  width: isMobile ? '6rem' : '12rem', // 96px for mobile, 192px for desktop
-                  height: isMobile ? '6rem' : '12rem',
-                }}
-              >
-                <div
-                  className={`absolute inset-0 ${member.color} transition-all duration-300 ${
-                    hoveredMember === index || longPressedMember === index ? 'scale-105' : 'scale-100'
-                  }`}
-                ></div>
-
-                <div className="absolute inset-2 bg-white rounded-full overflow-hidden">
-                  <div className="w-full h-full relative">
-                    <img
-                      src={member.avatar}
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <div
-                      className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
-                        hoveredMember === index || longPressedMember === index ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    ></div>
-                  </div>
+              <div className="relative w-[280px] h-[320px] bg-slate-900/90 rounded-lg overflow-hidden backdrop-blur-xl transform transition-all duration-500 group-hover:scale-105">
+                {/* Glowing Effects */}
+                <div className="absolute inset-0 opacity-75 mix-blend-overlay bg-gradient-to-b from-transparent via-cyan-500/10 to-cyan-500/20" />
+                
+                {/* Image */}
+                <div className="h-[220px] overflow-hidden">
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
+
+                {/* Info Section */}
+                <div className="absolute bottom-0 left-0 right-0 bg-slate-900/95 p-6 backdrop-blur-sm">
+                  <h3 className="text-cyan-300 font-semibold text-xl mb-1">{member.name}</h3>
+                  <p className="text-cyan-400/80 text-sm">{member.role}</p>
+                  
+                  {/* Decorative line */}
+                  <div className="absolute bottom-0 left-[10%] w-[80%] h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+                </div>
+
+                {/* Hover Effects */}
+                <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
 
-              {/* Name Display */}
-              <div className="absolute bottom-6 left-0 right-0 text-center transition-all duration-300">
-                <div
-                  className={`bg-white bg-opacity-90 mx-4 py-1 px-3 rounded-full ${
-                    isMobile ? 'hidden' : 'block'
-                  }`}
-                >
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
-                </div>
-              </div>
-
-              {/* Long Press Name for Mobile */}
-              {isMobile && longPressedMember === index && (
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg">
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
-                  <p className="text-xs text-gray-600">{member.role}</p>
-                </div>
-              )}
+              {/* Corner Accents */}
+              <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-cyan-400" />
+              <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-cyan-400" />
+              <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-cyan-400" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-cyan-400" />
             </div>
           ))}
         </div>
       </div>
+
+      {/* Animated Lines */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(5)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"
+            style={{
+              top: `${20 * i}%`,
+              animation: `scanline 8s ${i * 1.5}s linear infinite`,
+              opacity: 0.5,
+            }}
+          />
+        ))}
+      </div>
+
+      <style jsx>{`
+        @keyframes scanline {
+          0% { transform: translateY(100vh); }
+          100% { transform: translateY(-100vh); }
+        }
+      `}</style>
     </div>
   );
 };

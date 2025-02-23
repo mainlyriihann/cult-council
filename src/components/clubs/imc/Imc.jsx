@@ -17,44 +17,63 @@ function cn(...inputs) {
 export function Imc() {
   return (
     <>  
-  <LampContainer>
-  <motion.div
-    initial={{ opacity: 0.5, y: 100 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{
-      delay: 0.3,
-      duration: 0.8,
-      ease: "easeInOut",
-    }}
-    className="text-center"
-  >
-    <h1 className="mt-8 mb-4 bg-gradient-to-br from-slate-300 to-slate-500 py-6 bg-clip-text text-4xl font-medium tracking-tight text-transparent md:text-7xl">
-      Indian Music Club
-    </h1>
+      <LampContainer>
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="text-center relative z-10"
+        >
+          <motion.h1 
+            className="mt-8 mb-4 bg-gradient-to-br from-cyan-300 via-cyan-400 to-cyan-500 py-6 bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-7xl lg:text-8xl"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Indian Music Club
+          </motion.h1>
 
-    <h2 className="mb-4 text-slate-400 text-3xl md:text-6xl font-medium">
-      "The soulful sound of IIT BHU"
-    </h2>
+          <motion.h2 
+            className="mb-4 bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-3xl md:text-6xl lg:text-7xl font-semibold text-transparent"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            "The soulful sound of IIT BHU"
+          </motion.h2>
 
-    <p className="text-slate-100 font-light text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-      The Indian Music Club, IIT BHU brings together music enthusiasts to explore, create, and
-      celebrate diverse musical traditions. From classical to contemporary, the club fosters a vibrant
-      community where students collaborate, perform, and cultivate their passion for music.
-    </p>
-  </motion.div>
-</LampContainer>
+          <motion.p 
+            className="text-slate-300 font-normal text-sm md:text-lg lg:text-xl leading-relaxed max-w-3xl mx-auto px-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            The Indian Music Club, IIT BHU brings together music enthusiasts to explore, create, and
+            celebrate diverse musical traditions. From classical to contemporary, the club fosters a vibrant
+            community where students collaborate, perform, and cultivate their passion for music.
+          </motion.p>
+        </motion.div>
+      </LampContainer>
 
-    
-    <ImcMedalShowcase />
-    <Carousel />
-    <ImcHelm />
-    <FloatingMusicIcons 
-        IconComponent={GiFlute}
-        iconCount={30}
-        minSize={40}
-        maxSize={300}
-        opacity={0.15}
-      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative z-20"
+      >
+        <ImcMedalShowcase />
+        <Carousel />
+        <ImcHelm />
+        <FloatingMusicIcons 
+          IconComponent={GiFlute}
+          iconCount={40}
+          minSize={30}
+          maxSize={250}
+          opacity={0.2}
+        />
+      </motion.div>
     </>
   );
 }
@@ -63,7 +82,7 @@ export const LampContainer = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-slate-950 w-full rounded-md z-0",
+        "relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 to-slate-900 w-full rounded-md z-0",
         className
       )}
     >
@@ -131,12 +150,14 @@ export const LampContainer = ({ children, className }) => {
         <div className="absolute inset-auto z-40 h-44 w-full -translate-y-[12.5rem] bg-slate-950" />
       </div>
 
-      <div className="relative z-50 flex -translate-y-72 flex-col items-center px-5 w-full">
+      <motion.div 
+        className="relative z-50 flex -translate-y-72 flex-col items-center px-5 w-full"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         {children}
-      </div>
-      
-        {/* <ImcMedalShowcase /> */}
-
+      </motion.div>
     </div>
   );
 };

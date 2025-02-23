@@ -48,38 +48,61 @@ const MasqCarousel = () => {
   }, [isHovered]);
 
   return (
-  <>
-    <div className="bg-slate-950 pt-20">
-        <h1 className="bg-gradient-to-br from-slate-300 to-slate-500 py-8 bg-clip-text text-center text-4xl font-semibold tracking-tight text-transparent md:text-5xl">Moments on Canvas</h1> 
-    </div>
-    <div className="relative w-full h-96 overflow-hidden bg-gradient-to-b from-slate-950 via-gray-900 to-gray-800">
-      <div
-        ref={containerRef}
-        className="flex items-center justify-start gap-12 w-full h-full overflow-x-scroll scrollbar-none"
-      >
-        {images.map((src, index) => (
-          <div
-            key={index}
-            onMouseEnter={() => {
-              setIsHovered(true); // Stop scrolling
-              setHoveredIndex(index);
-            }}
-            onMouseLeave={() => {
-              setIsHovered(false); // Resume scrolling
-              setHoveredIndex(null);
-            }}
-            className={`relative w-64 h-80 flex-shrink-0 rounded-2xl bg-cover bg-center transition-transform duration-500 ${
-              hoveredIndex === index || hoveredIndex === null
-                ? "scale-110 z-10 shadow-2xl -translate-y-2" // Highlighted image
-                : "scale-90 z-0 backdrop-blur-lg bg-white/30 opacity-50" // Glassmorphism for others
-            }`}
-            style={{
-              backgroundImage: `url(${src})`,
-            }}
-          />
-        ))}
+    <>
+      <div className="bg-black pt-20">
+        <h1 className="bg-gradient-to-r from-red-600 via-red-500 to-red-700 py-8 bg-clip-text text-center text-4xl font-bold tracking-tight text-transparent md:text-6xl">
+          Moments on Stage
+        </h1>
+        <p className="text-red-500 text-center text-lg italic mb-8">
+          Capturing the essence of theatrical excellence
+        </p>
       </div>
-    </div>
+      <div className="relative w-full h-[32rem] overflow-hidden bg-gradient-to-b from-black via-red-950/30 to-black">
+        {/* Add decorative elements */}
+        <div className="absolute inset-0 bg-[url('/curtain-texture.png')] opacity-10 pointer-events-none" />
+        <div
+          ref={containerRef}
+          className="flex items-center justify-start gap-16 w-full h-full overflow-x-scroll scrollbar-none px-8"
+        >
+          {images.map((src, index) => (
+            <div
+              key={index}
+              onMouseEnter={() => {
+                setIsHovered(true);
+                setHoveredIndex(index);
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                setHoveredIndex(null);
+              }}
+              className={`relative w-72 h-96 flex-shrink-0 rounded-lg transition-all duration-700 
+                ${
+                  hoveredIndex === index || hoveredIndex === null
+                    ? "scale-110 z-10 shadow-[0_0_30px_rgba(220,38,38,0.3)] rotate-0"
+                    : "scale-75 z-0 opacity-30 rotate-6"
+                }
+              `}
+            >
+              <div
+                className="w-full h-full rounded-lg bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${src})`,
+                }}
+              />
+              {/* Add a subtle red overlay on hover */}
+              <div
+                className={`absolute inset-0 rounded-lg transition-opacity duration-500 ${
+                  hoveredIndex === index
+                    ? "bg-gradient-to-t from-red-950/80 via-transparent to-transparent opacity-100"
+                    : "opacity-0"
+                }`}
+              />
+            </div>
+          ))}
+        </div>
+        {/* Add vignette effect */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black via-transparent to-black" />
+      </div>
     </>
   );
 };

@@ -28,47 +28,161 @@ const MedalShowcase = () => {
     ],
   };
 
-  const MedalCard = ({ medal, color, shadowColor }) => (
-    <div
-      className={`relative w-24 h-24 xs:w-28 xs:h-28 sm:w-32 sm:h-32 rounded-full flex flex-col items-center justify-center shadow-md transition-transform transform
-        ${hoveredMedal === medal.id ? 'scale-110 shadow-2xl z-10' : 'scale-100'}`}
-      style={{
-        background: `radial-gradient(circle, ${color} 0%, ${shadowColor} 70%)`,
-        boxShadow: hoveredMedal === medal.id ? `0 0 30px ${color}, 0 0 60px ${shadowColor}` : '',
-      }}
-      onMouseEnter={() => setHoveredMedal(medal.id)}
-      onMouseLeave={() => setHoveredMedal(null)}
-    >
+  const MedalCard = ({ medal, color, shadowColor }) => {
+    const isBottomRow = medal.id.startsWith('b') && parseInt(medal.id.slice(1)) > 5;
+
+    // Enhanced colors for each medal type
+    const getColors = () => {
+      if (medal.id.startsWith('g')) {
+        return {
+          main: '#FFD700',
+          glow: '#FFA500',
+          gradient: `radial-gradient(circle at 30% 30%, 
+            #fff6d5 0%, 
+            #ffd700 30%, 
+            #fdb813 45%,
+            #ffd700 60%,
+            #fdb813 85%,
+            #e6b800 100%)`,
+          shadow: 'rgba(255, 215, 0, 0.4)',
+          inner: `linear-gradient(135deg, 
+            #fff6d5 0%, 
+            #ffd700 25%, 
+            #fdb813 50%, 
+            #ffd700 75%, 
+            #e6b800 100%)`
+        };
+      }
+      if (medal.id.startsWith('s')) {
+        return {
+          main: '#C0C0C0',
+          glow: '#A9A9A9',
+          gradient: `radial-gradient(circle at 30% 30%, 
+            #ffffff 0%, 
+            #e6e6e6 30%, 
+            #c0c0c0 45%,
+            #d9d9d9 60%,
+            #a6a6a6 85%,
+            #999999 100%)`,
+          shadow: 'rgba(192, 192, 192, 0.4)',
+          inner: `linear-gradient(135deg, 
+            #ffffff 0%, 
+            #e6e6e6 25%, 
+            #c0c0c0 50%, 
+            #d9d9d9 75%, 
+            #b3b3b3 100%)`
+        };
+      }
+      return {
+        main: '#CD7F32',
+        glow: '#A0522D',
+        gradient: `radial-gradient(circle at 30% 30%, 
+          #ffc8a3 0%, 
+          #cd7f32 30%, 
+          #b87333 45%,
+          #cd7f32 60%,
+          #a66a2e 85%,
+          #8b4513 100%)`,
+        shadow: 'rgba(205, 127, 50, 0.4)',
+        inner: `linear-gradient(135deg, 
+          #ffc8a3 0%, 
+          #cd7f32 25%, 
+          #b87333 50%, 
+          #cd7f32 75%, 
+          #a66a2e 100%)`
+      };
+    };
+
+    const colors = getColors();
+
+    return (
       <div
-        className="w-16 h-16 xs:w-20 xs:h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center text-white text-base xs:text-lg sm:text-xl md:text-2xl font-bold"
-        style={{
-          background: `linear-gradient(145deg, ${shadowColor}, ${color})`,
-          boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.3)',
-        }}
+        className="group relative"
       >
-        {medal.position}
-      </div>
-      {hoveredMedal === medal.id && (
         <div
-          className="absolute top-full mt-4 w-40 xs:w-44 sm:w-48 p-3 xs:p-3.5 sm:p-4 bg-white rounded-lg shadow-md text-center text-gray-800 text-xs xs:text-sm sm:text-base transition-opacity duration-500"
+          className={`relative w-16 h-16 xs:w-20 xs:h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex flex-col items-center justify-center transition-all duration-300 transform cursor-pointer
+            ${hoveredMedal === medal.id ? 'scale-110 z-10' : 'scale-100 hover:scale-105'}`}
           style={{
-            background: 'rgba(255, 255, 255, 0.9)',
-            borderTop: `3px solid ${color}`,
-            opacity: 1,
+            background: colors.gradient,
+            boxShadow: hoveredMedal === medal.id 
+              ? `0 0 30px ${colors.shadow}, 
+                 0 0 60px ${colors.shadow}, 
+                 inset 0 0 20px rgba(255, 255, 255, 0.5), 
+                 inset 0 -20px 50px rgba(0, 0, 0, 0.2)`
+              : `0 10px 20px rgba(0,0,0,0.2), 
+                 inset 0 0 15px rgba(255, 255, 255, 0.5), 
+                 inset 0 -10px 30px rgba(0, 0, 0, 0.2)`,
+          }}
+          onMouseEnter={() => setHoveredMedal(medal.id)}
+          onMouseLeave={() => setHoveredMedal(null)}
+        >
+          <div
+            className="w-10 h-10 xs:w-14 xs:h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-white text-xs xs:text-sm sm:text-lg md:text-xl font-bold relative overflow-hidden"
+            style={{
+              background: colors.inner,
+              boxShadow: `inset 0 2px 4px rgba(0,0,0,0.3), 
+                          inset 0 -2px 4px rgba(255,255,255,0.2)`,
+              textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+            }}
+          >
+            {/* Shine effect */}
+            <div 
+              className="absolute inset-0 opacity-40"
+              style={{
+                background: `linear-gradient(45deg, 
+                  transparent 20%, 
+                  rgba(255,255,255,0.3) 35%, 
+                  rgba(255,255,255,0.8) 40%, 
+                  rgba(255,255,255,0.9) 45%, 
+                  rgba(255,255,255,0.8) 50%, 
+                  rgba(255,255,255,0.3) 55%, 
+                  transparent 80%)`,
+                transform: hoveredMedal === medal.id ? 'translateX(100%)' : 'translateX(-100%)',
+                transition: 'transform 1s ease-in-out',
+              }}
+            />
+            <span className="relative z-10">{medal.position}</span>
+          </div>
+        </div>
+
+        {/* Popup name tag */}
+        <div
+          className={`absolute ${isBottomRow ? 'bottom-full mb-3' : 'top-full mt-3'} left-1/2 -translate-x-1/2 w-max max-w-[150px] xs:max-w-[200px] sm:max-w-[250px] p-2 xs:p-3 rounded-xl backdrop-blur-md shadow-xl text-center transition-all duration-300 transform
+            ${hoveredMedal === medal.id ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-2'}`}
+          style={{
+            background: `linear-gradient(145deg, rgba(255,255,255,0.98), rgba(255,255,255,0.9))`,
+            border: `1px solid ${colors.main}`,
+            boxShadow: `0 4px 15px rgba(0,0,0,0.1), 0 0 5px ${colors.shadow}`,
+            zIndex: 20,
+            pointerEvents: hoveredMedal === medal.id ? 'auto' : 'none'
           }}
         >
-          {medal.event}
+          <div 
+            className={`absolute ${isBottomRow ? 'bottom-[-8px]' : '-top-2'} left-1/2 -translate-x-1/2 w-3 xs:w-4 h-3 xs:h-4 rotate-45`}
+            style={{
+              background: isBottomRow 
+                ? `linear-gradient(315deg, ${colors.main} 50%, transparent 50%)`
+                : `linear-gradient(135deg, ${colors.main} 50%, transparent 50%)`,
+              borderLeft: isBottomRow ? 'none' : `1px solid ${colors.main}`,
+              borderTop: isBottomRow ? 'none' : `1px solid ${colors.main}`,
+              borderRight: isBottomRow ? `1px solid ${colors.main}` : 'none',
+              borderBottom: isBottomRow ? `1px solid ${colors.main}` : 'none',
+            }}
+          />
+          <p className="text-[10px] xs:text-xs sm:text-sm font-medium text-gray-800 line-clamp-2">
+            {medal.event}
+          </p>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  };
 
   const MedalRow = ({ type, medals, color, shadowColor }) => (
-    <div className="mb-8 sm:mb-12">
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-center text-white mb-6 sm:mb-8">
+    <div className="mb-6 sm:mb-8 md:mb-12">
+      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center text-white mb-4 sm:mb-6 md:mb-8">
         {type.charAt(0).toUpperCase() + type.slice(1)} Medals
       </h2>
-      <div className="flex flex-wrap justify-center gap-3 xs:gap-4 sm:gap-6 md:gap-8">
+      <div className="flex flex-wrap justify-center gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 px-2 sm:px-4">
         {medals.map((medal) => (
           <MedalCard
             key={medal.id}
@@ -82,15 +196,15 @@ const MedalShowcase = () => {
   );
 
   return (
-<div className="min-h-screen p-4 xs:p-6 sm:p-8 relative bg-gradient-to-t from-gray-900 via-slate-900  to-neutral-950">
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="min-h-screen p-3 xs:p-4 sm:p-6 md:p-8 relative bg-gradient-to-t from-gray-900 via-slate-900 to-neutral-950 overflow-x-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
             className="absolute rounded-full opacity-10"
             style={{
-              width: `${Math.random() * 200 + 50}px`,
-              height: `${Math.random() * 200 + 50}px`,
+              width: `${Math.random() * 150 + 50}px`,
+              height: `${Math.random() * 150 + 50}px`,
               background: 'white',
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
@@ -107,31 +221,41 @@ const MedalShowcase = () => {
           50% { opacity: 0.1; }
           100% { transform: translateY(-100px) scale(1); opacity: 0; }
         }
+
+        @media (max-width: 640px) {
+          @keyframes floatBubble {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.08; }
+            100% { transform: translateY(-50px) scale(0.8); opacity: 0; }
+          }
+        }
       `}</style>
 
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-white mb-12 sm:mb-16 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-gray-300 to-orange-500">
+      <div className="max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8">
+        <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-white mb-8 sm:mb-12 md:mb-16 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-gray-300 to-orange-500 px-4">
           Our Achievements
         </h1>
 
-        <MedalRow
-          type="gold"
-          medals={medals.gold}
-          color="#FFD700"
-          shadowColor="#B8860B"
-        />
-        <MedalRow
-          type="silver"
-          medals={medals.silver}
-          color="#E6E8FA"
-          shadowColor="#A9A9A9"
-        />
-        <MedalRow
-          type="bronze"
-          medals={medals.bronze}
-          color="#CD7F32"
-          shadowColor="#8B4513"
-        />
+        <div className="space-y-8 sm:space-y-12 md:space-y-16">
+          <MedalRow
+            type="gold"
+            medals={medals.gold}
+            color="#FFD700"
+            shadowColor="#B8860B"
+          />
+          <MedalRow
+            type="silver"
+            medals={medals.silver}
+            color="#E6E8FA"
+            shadowColor="#A9A9A9"
+          />
+          <MedalRow
+            type="bronze"
+            medals={medals.bronze}
+            color="#CD7F32"
+            shadowColor="#8B4513"
+          />
+        </div>
       </div>
     </div>
   );

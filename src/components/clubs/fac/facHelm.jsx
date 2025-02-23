@@ -52,16 +52,17 @@ const FacHelm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-t from-slate-900 via-gray-900 to-gray-800 flex items-center justify-center p-4 relative py-14">
+    <div className="bg-gradient-to-t from-slate-900 via-emerald-900 to-slate-800 flex items-center justify-center p-4 relative py-14">
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full opacity-10"
+            className="absolute rounded-full opacity-10 backdrop-blur-sm"
             style={{
               width: `${Math.random() * 200 + 50}px`,
               height: `${Math.random() * 200 + 50}px`,
-              background: 'white',
+              background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.3), rgba(6, 95, 70, 0.3))',
+              boxShadow: '0 0 20px rgba(16, 185, 129, 0.5)',
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               animation: `floatBubble ${Math.random() * 10 + 10}s linear infinite`,
@@ -73,19 +74,21 @@ const FacHelm = () => {
 
       <style jsx>{`
         @keyframes floatBubble {
-          0% { transform: translateY(100vh) scale(0); opacity: 0; }
-          50% { opacity: 0.1; }
-          100% { transform: translateY(-100px) scale(1); opacity: 0; }
+          0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+          50% { opacity: 0.2; }
+          100% { transform: translateY(-100px) scale(1) rotate(360deg); opacity: 0; }
         }
       `}</style>
 
-      <div className="relative max-w-6xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-semibold text-slate-200">Our Helm</h2>
-          <p className="text-gray-600 mt-2">Meet our Helm Team</p>
+      <div className="relative max-w-6xl w-full">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+            Our Helm
+          </h2>
+          <p className="text-gray-400 mt-3 text-lg">Meet our Visionary Leaders</p>
         </div>
 
-        <div className="flex justify-center items-center -space-x-8 flex-wrap">
+        <div className="flex justify-center items-center gap-4 md:gap-8 flex-wrap">
           {teamMembers.map((member, index) => (
             <div
               key={member.name}
@@ -96,65 +99,48 @@ const FacHelm = () => {
               onTouchEnd={() => isMobile && handleLongPressEnd()}
               style={{ zIndex: hoveredMember === index || longPressedMember === index ? 10 : 1 }}
             >
-              {/* Role Tooltip (Visible on Hover for Desktop and Long Press for Mobile) */}
               {(hoveredMember === index || longPressedMember === index) && (
-                <div
-                  className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg transform transition-all duration-300"
-                >
-                  <p className="text-sm font-semibold whitespace-nowrap">{member.role}</p>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white transform rotate-45"></div>
+                <div className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md px-6 py-2 rounded-xl shadow-lg transform transition-all duration-300 border border-white/20">
+                  <p className="text-sm font-semibold whitespace-nowrap text-white">{member.role}</p>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/10 backdrop-blur-md transform rotate-45 border-r border-b border-white/20"></div>
                 </div>
               )}
 
-              {/* Avatar Container */}
               <div
                 className={`relative rounded-full overflow-hidden transform transition-all duration-300 ${
                   hoveredMember === index || longPressedMember === index ? 'scale-110' : 'scale-100'
                 }`}
-                // Dynamic sizing for image frame
                 style={{
-                  width: isMobile ? '6rem' : '12rem', // 96px for mobile, 192px for desktop
-                  height: isMobile ? '6rem' : '12rem',
+                  width: isMobile ? '8rem' : '14rem',
+                  height: isMobile ? '8rem' : '14rem',
                 }}
               >
-                <div
-                  className={`absolute inset-0 ${member.color} transition-all duration-300 ${
-                    hoveredMember === index || longPressedMember === index ? 'scale-105' : 'scale-100'
-                  }`}
-                ></div>
-
-                <div className="absolute inset-2 bg-white rounded-full overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-tr from-${member.color.split('-')[1]}-500 to-${member.color.split('-')[1]}-300 opacity-80`}></div>
+                
+                <div className="absolute inset-1 bg-black rounded-full overflow-hidden backdrop-blur-sm border border-white/20">
                   <div className="w-full h-full relative">
                     <img
                       src={member.avatar}
                       alt={member.name}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    <div
-                      className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
-                        hoveredMember === index || longPressedMember === index ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    ></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                 </div>
               </div>
 
-              {/* Name Display */}
-              <div className="absolute bottom-6 left-0 right-0 text-center transition-all duration-300">
-                <div
-                  className={`bg-white bg-opacity-90 mx-4 py-1 px-3 rounded-full ${
-                    isMobile ? 'hidden' : 'block'
-                  }`}
-                >
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
+              <div className="absolute -bottom-8 left-0 right-0 text-center transition-all duration-300">
+                <div className={`backdrop-blur-md bg-white/10 mx-auto py-2 px-4 rounded-xl border border-white/20 inline-block ${
+                  isMobile ? 'hidden' : 'block'
+                }`}>
+                  <p className="text-sm font-semibold text-white">{member.name}</p>
                 </div>
               </div>
 
-              {/* Long Press Name for Mobile */}
               {isMobile && longPressedMember === index && (
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg">
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
-                  <p className="text-xs text-gray-600">{member.role}</p>
+                <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 backdrop-blur-md bg-white/10 px-6 py-3 rounded-xl border border-white/20">
+                  <p className="text-sm font-semibold text-white">{member.name}</p>
+                  <p className="text-xs text-gray-300">{member.role}</p>
                 </div>
               )}
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const HelmMasq = () => {
   const [hoveredMember, setHoveredMember] = useState(null);
@@ -52,43 +53,56 @@ const HelmMasq = () => {
   };
 
   return (
-    <div className="bg-gradient-to-t from-slate-900 via-gray-900 to-gray-800 flex items-center justify-center p-4 relative py-14">
+    <div className="bg-gradient-to-b from-red-950 via-gray-900 to-red-950/80 min-h-screen flex items-center justify-center p-4 relative py-14">
+      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <div
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15),transparent_50%)]" />
+        {[...Array(15)].map((_, i) => (
+          <motion.div
             key={i}
-            className="absolute rounded-full opacity-10"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: [0.1, 0.3, 0.1],
+              scale: [1, 1.2, 1],
+              y: [-10, 10, -10]
+            }}
+            transition={{
+              duration: Math.random() * 5 + 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 2
+            }}
+            className="absolute rounded-full"
             style={{
               width: `${Math.random() * 200 + 50}px`,
               height: `${Math.random() * 200 + 50}px`,
-              background: 'white',
+              background: 'radial-gradient(circle, rgba(220,38,38,0.1) 0%, transparent 70%)',
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              animation: `floatBubble ${Math.random() * 10 + 10}s linear infinite`,
-              animationDelay: `${Math.random()}s`,
             }}
           />
         ))}
       </div>
 
-      <style jsx>{`
-        @keyframes floatBubble {
-          0% { transform: translateY(100vh) scale(0); opacity: 0; }
-          50% { opacity: 0.1; }
-          100% { transform: translateY(-100px) scale(1); opacity: 0; }
-        }
-      `}</style>
+      <div className="relative max-w-6xl z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-300 via-red-200 to-red-300 bg-clip-text text-transparent">
+            Our Helm
+          </h2>
+          <p className="text-red-400/80 mt-3 text-lg">Meet our Visionary Leaders</p>
+        </motion.div>
 
-      <div className="relative max-w-6xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-semibold text-slate-200">Our Helm</h2>
-          <p className="text-gray-600 mt-2">Meet our Helm Team</p>
-        </div>
-
-        <div className="flex justify-center items-center -space-x-8 flex-wrap">
+        <div className="flex justify-center items-center gap-4 md:gap-8 flex-wrap">
           {teamMembers.map((member, index) => (
-            <div
+            <motion.div
               key={member.name}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.2 }}
               className="relative group"
               onMouseEnter={() => !isMobile && setHoveredMember(index)}
               onMouseLeave={() => !isMobile && setHoveredMember(null)}
@@ -96,68 +110,69 @@ const HelmMasq = () => {
               onTouchEnd={() => isMobile && handleLongPressEnd()}
               style={{ zIndex: hoveredMember === index || longPressedMember === index ? 10 : 1 }}
             >
-              {/* Role Tooltip (Visible on Hover for Desktop and Long Press for Mobile) */}
-              {(hoveredMember === index || longPressedMember === index) && (
-                <div
-                  className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg transform transition-all duration-300"
-                >
-                  <p className="text-sm font-semibold whitespace-nowrap">{member.role}</p>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white transform rotate-45"></div>
-                </div>
-              )}
+              {/* Info Card (Visible on Hover/Long Press) */}
+              <AnimatePresence>
+                {(hoveredMember === index || longPressedMember === index) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute -top-20 left-1/2 -translate-x-1/2 w-48 bg-gradient-to-b from-red-950 to-gray-900 backdrop-blur-lg rounded-xl p-4 shadow-[0_0_15px_rgba(220,38,38,0.3)] border border-red-500/20"
+                  >
+                    <p className="text-red-200 font-medium text-center">{member.role}</p>
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-red-950 transform rotate-45 border-b border-r border-red-500/20"></div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Avatar Container */}
-              <div
-                className={`relative rounded-full overflow-hidden transform transition-all duration-300 ${
-                  hoveredMember === index || longPressedMember === index ? 'scale-110' : 'scale-100'
-                }`}
-                // Dynamic sizing for image frame
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="relative rounded-2xl overflow-hidden backdrop-blur-sm"
                 style={{
-                  width: isMobile ? '6rem' : '12rem', // 96px for mobile, 192px for desktop
-                  height: isMobile ? '6rem' : '12rem',
+                  width: isMobile ? '8rem' : '14rem',
+                  height: isMobile ? '8rem' : '14rem',
                 }}
               >
-                <div
-                  className={`absolute inset-0 ${member.color} transition-all duration-300 ${
-                    hoveredMember === index || longPressedMember === index ? 'scale-105' : 'scale-100'
-                  }`}
-                ></div>
-
-                <div className="absolute inset-2 bg-white rounded-full overflow-hidden">
-                  <div className="w-full h-full relative">
+                {/* Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-red-500/20 via-transparent to-red-500/20 animate-pulse" />
+                
+                {/* Image Container */}
+                <div className="absolute inset-[3px] bg-gradient-to-b from-red-950 to-gray-900 rounded-2xl overflow-hidden p-1">
+                  <div className="w-full h-full relative rounded-xl overflow-hidden">
                     <img
                       src={member.avatar}
                       alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div
-                      className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
-                        hoveredMember === index || longPressedMember === index ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    ></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-red-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Name Display */}
-              <div className="absolute bottom-6 left-0 right-0 text-center transition-all duration-300">
-                <div
-                  className={`bg-white bg-opacity-90 mx-4 py-1 px-3 rounded-full ${
-                    isMobile ? 'hidden' : 'block'
-                  }`}
-                >
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute -bottom-8 left-0 right-0 text-center"
+              >
+                <div className="bg-gradient-to-r from-red-950/80 via-gray-900/80 to-red-950/80 backdrop-blur-sm mx-4 py-2 px-4 rounded-xl border border-red-500/20">
+                  <p className="text-red-200 font-medium">{member.name}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Long Press Name for Mobile */}
+              {/* Mobile Long Press Info */}
               {isMobile && longPressedMember === index && (
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg">
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
-                  <p className="text-xs text-gray-600">{member.role}</p>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-gradient-to-b from-red-950 to-gray-900 px-4 py-2 rounded-xl shadow-lg border border-red-500/20 backdrop-blur-sm"
+                >
+                  <p className="text-red-200 font-medium text-center">{member.name}</p>
+                  <p className="text-red-400/80 text-sm text-center">{member.role}</p>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

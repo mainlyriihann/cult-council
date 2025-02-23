@@ -1,162 +1,169 @@
 import React, { useState, useEffect } from 'react';
+import { Paintbrush, Palette, Layers } from 'lucide-react';
 
-const VideoTeamDisplay = () => {
+const DesignTeamDisplay = () => {
   const [hoveredMember, setHoveredMember] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [longPressedMember, setLongPressedMember] = useState(null);
-  const longPressTimeout = React.useRef(null);
 
   const teamMembers = [
     {
       name: 'Kumar Soham',
       role: 'Design Head',
       avatar: 'https://ik.imagekit.io/mrityunjay/soham.jpeg?updatedAt=1737970027739',
-      color: 'bg-blue-100',
+      color: 'from-rose-400 via-fuchsia-500 to-indigo-500',
+      glowColor: 'rgba(244, 63, 94, 0.5)',
+      icon: Paintbrush,
+      skills: []
     },
     {
       name: 'Sambhav Gupta',
       role: 'Design Head',
       avatar: 'https://ik.imagekit.io/mrityunjay/sambhav.jpg?updatedAt=1737970027605',
-      color: 'bg-purple-100',
+      color: 'from-violet-400 via-purple-500 to-fuchsia-500',
+      glowColor: 'rgba(167, 139, 250, 0.5)',
+      icon: Palette,
+      skills: []
     },
     {
       name: 'Om Utkarsh',
       role: 'Joint Head',
       avatar: 'https://ik.imagekit.io/mrityunjay/Om.png?updatedAt=1737970024182',
-      color: 'bg-pink-100',
-    },
+      color: 'from-blue-400 via-cyan-500 to-teal-500',
+      glowColor: 'rgba(6, 182, 212, 0.5)',
+      icon: Layers,
+      skills: []
+    }
   ];
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.matchMedia('(max-width: 768px)').matches);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleLongPressStart = (index) => {
-    longPressTimeout.current = setTimeout(() => {
-      setLongPressedMember(index);
-    }, 500); // Long press duration (500ms)
-  };
-
-  const handleLongPressEnd = () => {
-    clearTimeout(longPressTimeout.current);
-    setLongPressedMember(null); // Hide the name and role after releasing
-  };
-
   return (
-    <div className="bg-slate-900 flex items-center justify-center p-4 relative">
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+    <div className="min-h-screen bg-[#030712] flex items-center justify-center px-4 py-16 md:py-24 relative overflow-hidden">
+      {/* Futuristic Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-slate-950 to-black opacity-90"></div>
+        
+        {/* Animated Design Elements */}
+        <div className="absolute inset-0" 
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 2px 2px, rgba(167, 139, 250, 0.15) 2px, transparent 0),
+              radial-gradient(circle at 2px 2px, rgba(244, 63, 94, 0.1) 2px, transparent 0)
+            `,
+            backgroundSize: '50px 50px, 25px 25px',
+            animation: 'patternMove 20s linear infinite'
+          }}>
+        </div>
+
+        {/* Floating Design Elements - Removed rotation */}
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full opacity-10"
+            className="absolute opacity-30"
             style={{
               width: `${Math.random() * 200 + 50}px`,
               height: `${Math.random() * 200 + 50}px`,
-              background: 'white',
+              background: `linear-gradient(${Math.random() * 360}deg, 
+                rgba(244, 63, 94, 0.3), 
+                rgba(167, 139, 250, 0.3))`,
+              borderRadius: '38% 62% 63% 37% / 41% 44% 56% 59%',
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              animation: `floatBubble ${Math.random() * 10 + 10}s linear infinite`,
-              animationDelay: `${Math.random()}s`,
+              animation: `floatNoRotate ${Math.random() * 10 + 15}s linear infinite`,
+              animationDelay: `-${Math.random() * 10}s`,
             }}
           />
         ))}
       </div>
 
       <style jsx>{`
-        @keyframes floatBubble {
-          0% { transform: translateY(100vh) scale(0); opacity: 0; }
-          50% { opacity: 0.1; }
-          100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        @keyframes patternMove {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50px); }
+        }
+        @keyframes floatNoRotate {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(-20px, 20px); }
+          50% { transform: translate(20px, -20px); }
+          75% { transform: translate(20px, 20px); }
+        }
+        @keyframes neonPulse {
+          0%, 100% { opacity: 0.8; filter: brightness(1); }
+          50% { opacity: 1; filter: brightness(1.2); }
         }
       `}</style>
 
-      <div className="relative max-w-6xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-yellow-50">Design Team</h2>
-          <p className="text-gray-600 mt-2">Meet our Designers</p>
+      <div className="relative max-w-7xl w-full z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r 
+            from-rose-400 via-fuchsia-500 to-violet-500 mb-6">Design Team</h2>
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent to-fuchsia-500"></div>
+            <Palette className="w-6 h-6 text-fuchsia-400 animate-pulse" />
+            <div className="h-px w-12 bg-gradient-to-l from-transparent to-fuchsia-500"></div>
+          </div>
         </div>
 
-        <div className="flex justify-center items-center -space-x-8 flex-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
           {teamMembers.map((member, index) => (
             <div
               key={member.name}
               className="relative group"
               onMouseEnter={() => !isMobile && setHoveredMember(index)}
               onMouseLeave={() => !isMobile && setHoveredMember(null)}
-              onTouchStart={() => isMobile && handleLongPressStart(index)}
-              onTouchEnd={() => isMobile && handleLongPressEnd()}
-              style={{ zIndex: hoveredMember === index || longPressedMember === index ? 10 : 1 }}
             >
-              {/* Role Tooltip (Visible on Hover for Desktop and Long Press for Mobile) */}
-              {(hoveredMember === index || longPressedMember === index) && (
-                <div
-                  className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg transform transition-all duration-300"
-                >
-                  <p className="text-sm font-semibold whitespace-nowrap">{member.role}</p>
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white transform rotate-45"></div>
-                </div>
-              )}
-
-              {/* Avatar Container */}
-              <div
-                className={`relative rounded-full overflow-hidden transform transition-all duration-300 ${
-                  hoveredMember === index || longPressedMember === index ? 'scale-110' : 'scale-100'
-                }`}
-                // Dynamic sizing for image frame
-                style={{
-                  width: isMobile ? '6rem' : '12rem', // 96px for mobile, 192px for desktop
-                  height: isMobile ? '6rem' : '12rem',
-                }}
-              >
-                <div
-                  className={`absolute inset-0 ${member.color} transition-all duration-300 ${
-                    hoveredMember === index || longPressedMember === index ? 'scale-105' : 'scale-100'
-                  }`}
-                ></div>
-
-                <div className="absolute inset-2 bg-white rounded-full overflow-hidden">
-                  <div className="w-full h-full relative">
+              {/* Member Card */}
+              <div className="relative bg-slate-900/30 backdrop-blur-xl rounded-2xl p-1 
+                transform transition-all duration-500 group-hover:scale-105">
+                {/* Neon Border Effect */}
+                <div className={`absolute -inset-0.5 bg-gradient-to-r ${member.color} rounded-2xl opacity-75 
+                  group-hover:opacity-100 blur-sm transition-all duration-500 animate-neonPulse`}></div>
+                
+                {/* Content Container */}
+                <div className="relative rounded-xl overflow-hidden">
+                  {/* Image Container */}
+                  <div className="relative aspect-square">
+                    <div className={`absolute inset-0 bg-gradient-to-r ${member.color} 
+                      opacity-75 mix-blend-overlay`}></div>
                     <img
                       src={member.avatar}
                       alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 
+                        group-hover:scale-110"
                     />
-                    <div
-                      className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
-                        hoveredMember === index || longPressedMember === index ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    ></div>
+                    
+                    {/* Hover Overlay */}
+                    <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent 
+                      transition-opacity duration-300 ${hoveredMember === index ? 'opacity-100' : 'opacity-0'}`}>
+                      <div className="absolute bottom-6 left-6 right-6">
+                        <p className="text-xl font-bold text-white mb-1">{member.name}</p>
+                        <p className="text-sm text-fuchsia-400 mb-3">{member.role}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {member.skills.map((skill, i) => (
+                            <span key={i} 
+                              className="text-xs px-2 py-1 rounded-full bg-white/10 text-white
+                                backdrop-blur-sm border border-white/10">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Name Display */}
-              <div className="absolute bottom-6 left-0 right-0 text-center transition-all duration-300">
-                <div
-                  className={`bg-white bg-opacity-90 mx-4 py-1 px-3 rounded-full ${
-                    isMobile ? 'hidden' : 'block'
-                  }`}
-                >
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
+                {/* Floating Icon - Removed rotation */}
+                <div className="absolute -top-3 -right-3 w-12 h-12 bg-slate-900/80 rounded-xl
+                  flex items-center justify-center border border-white/20 backdrop-blur-sm
+                  transition-all duration-300">
+                  <member.icon className={`w-6 h-6 text-gradient-to-r ${member.color}`} />
                 </div>
               </div>
-
-              {/* Long Press Name for Mobile */}
-              {isMobile && longPressedMember === index && (
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg">
-                  <p className="text-sm font-semibold text-gray-900">{member.name}</p>
-                  <p className="text-xs text-gray-600">{member.role}</p>
-                </div>
-              )}
             </div>
           ))}
         </div>
@@ -165,4 +172,4 @@ const VideoTeamDisplay = () => {
   );
 };
 
-export default VideoTeamDisplay;
+export default DesignTeamDisplay;

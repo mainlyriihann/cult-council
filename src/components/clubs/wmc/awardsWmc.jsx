@@ -26,10 +26,15 @@ const WmcMedalShowcase = () => {
             />
 
             {hoveredMedal === medal.id && (
-              <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-slate-200 text-black px-6 py-2 rounded-3xl border-4 border-purple-900 shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100">
-                <p className="font-bold text-lg">{medal.title}</p>
-                <p className="text-sm mt-2">{medal.year}</p>
-                <p className="text-sm">{medal.location}</p>
+              <div className="absolute bottom-full mb-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm text-slate-900 px-4 py-3 rounded-xl border-2 border-purple-500 shadow-xl transition-all duration-300 w-48 z-10">
+                <div className="relative">
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                    <div className="border-8 border-transparent border-t-white/90"></div>
+                  </div>
+                  <p className="font-bold text-base mb-1">{medal.title}</p>
+                  {medal.year && <p className="text-sm text-slate-700">{medal.year}</p>}
+                  {medal.location && <p className="text-sm text-slate-700">{medal.location}</p>}
+                </div>
               </div>
             )}
           </div>
